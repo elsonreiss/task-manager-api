@@ -76,7 +76,7 @@ public class UserService {
         return UserMapper.toDTO(updatedUser);
     }
 
-    publiv void deleteUser(Long id) {
+    public void deleteUser(Long id) {
         // Verifica se o usuário existe antes de tentar deletar
         if (!repository.existsById(id)) {
             throw new RuntimeException("Usuário não encontrado");
