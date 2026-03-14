@@ -9,5 +9,4 @@ public class TeskManagerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TeskManagerApplication.class, args);
 	}
-
 }
