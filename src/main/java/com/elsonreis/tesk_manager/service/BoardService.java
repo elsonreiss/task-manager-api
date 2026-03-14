@@ -22,7 +22,7 @@ public class BoardService {
         this.userRepository = userRepository;
     }
 
-    public BoardResponse creteBoard(BoardRequest request) {
+    public BoardResponse createBoard(BoardRequest request) {
 
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
