@@ -1,7 +1,9 @@
 package com.elsonreis.tesk_manager.mapper;
 
+import com.elsonreis.tesk_manager.dto.request.TaskRequest;
 import com.elsonreis.tesk_manager.dto.response.TaskResponse;
 import com.elsonreis.tesk_manager.entity.Task;
+import com.elsonreis.tesk_manager.enums.TaskStatus;
 
 public class TaskMapper {
 
@@ -16,5 +18,16 @@ public class TaskMapper {
         dto.setBoardId(task.getBoard().getId());
 
         return dto;
+    }
+
+    public static Task toEntity(TaskRequest dto) {
+
+        Task task = new Task();
+
+        task.setTitle(dto.getTitle());
+        task.setDescription(dto.getDescription());
+        task.setStatus(TaskStatus.valueOf(dto.getStatus()));
+
+        return task;
     }
 }
