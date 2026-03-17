@@ -23,11 +23,9 @@ public class Comment {
     @NotBlank(message = "Comment content cannot be blank")
     @Size(max = 500, message = "Comment content cannot exceed 500 characters")
     @Column(nullable = false, length = 500)
-    private String content;
+    private String message;
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
-
-
 }
