@@ -26,6 +26,6 @@ public class Board {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

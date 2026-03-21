@@ -76,20 +76,6 @@ public class CommentService {
                 .toList();
     }
 
-     public List<CommentResponse> findByUserId(Long userId) {
-
-        List<Comment> comments = commentRepository.findByUserId(userId);
-
-        if (comments.isEmpty()) {
-            throw new RuntimeException("Nenhum comentário encontrado para o usuário com id: " + userId);
-        }
-
-        return comments
-                .stream()
-                .map(CommentMapper::toDto)
-                .toList();
-    }
-
     public CommentResponse updateComment(Long id, CommentRequest commentRequest) {
 
         Comment comment = commentRepository.findById(id)

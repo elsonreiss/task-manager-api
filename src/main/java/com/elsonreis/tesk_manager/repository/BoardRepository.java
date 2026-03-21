@@ -13,8 +13,4 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findByUser(User user);
 
     List<Board> findByUserId(Long userId);
-
-    Comment findByCommentsId(Long commentId);
-
-    Task findByTasksId(Long taskId);
 }

@@ -42,12 +42,6 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<List<CommentResponse>> findByUserId(@RequestParam Long userId) {
-        List<CommentResponse> comments = service.findByUserId(userId);
-        return ResponseEntity.ok(comments);
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponse> updateComment(@PathVariable Long id, @RequestBody CommentRequest commentRequest) {
         CommentResponse updatedComment = service.updateComment(id, commentRequest);
