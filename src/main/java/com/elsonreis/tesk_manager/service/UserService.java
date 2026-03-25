@@ -5,6 +5,7 @@ import com.elsonreis.tesk_manager.dto.response.UserResponse;
 import com.elsonreis.tesk_manager.entity.User;
 import com.elsonreis.tesk_manager.mapper.UserMapper;
 import com.elsonreis.tesk_manager.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +15,11 @@ public class UserService {
 
     final UserRepository repository;
 
-    public UserService(UserRepository repository) {
+    final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponse createUser(UserRequest request) {
@@ -27,6 +31,8 @@ public class UserService {
 
         // Converte DTO para entidade
         User user = UserMapper.toEntity(request);
+
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         // Persiste no banco de dados
         User savedUser = repository.save(user);
