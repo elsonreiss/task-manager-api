@@ -22,9 +22,9 @@ public class BoardService {
         this.userRepository = userRepository;
     }
 
-    public BoardResponse createBoard(BoardRequest request) {
+    public BoardResponse createBoard(BoardRequest request, String email) {
 
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         Board board = new Board();
@@ -65,12 +65,12 @@ public class BoardService {
                 .toList();
     }
 
-    public BoardResponse updateBoard(Long id, BoardRequest request) {
+    public BoardResponse updateBoard(Long id, BoardRequest request, String email) {
 
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Quadro não encontrado!"));
 
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
 
         board.setName(request.getName());
