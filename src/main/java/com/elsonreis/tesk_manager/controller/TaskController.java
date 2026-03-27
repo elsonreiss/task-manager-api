@@ -2,6 +2,7 @@ package com.elsonreis.tesk_manager.controller;
 
 import com.elsonreis.tesk_manager.dto.request.TaskRequest;
 import com.elsonreis.tesk_manager.dto.response.TaskResponse;
+import com.elsonreis.tesk_manager.secutiry.AuthUtils;
 import com.elsonreis.tesk_manager.service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,8 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest taskRequest) {
-        TaskResponse createdTask = service.createTask(taskRequest);
+        String email = AuthUtils.getEmailFromContext();
+        TaskResponse createdTask = service.createTask(taskRequest, email);
         return ResponseEntity.status(201).body(createdTask);
     }
 
@@ -51,13 +53,15 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @RequestBody TaskRequest taskRequest) {
-        TaskResponse updatedTask = service.updateTask(id, taskRequest);
+        String email = AuthUtils.getEmailFromContext();
+        TaskResponse updatedTask = service.updateTask(id, taskRequest, email);
         return ResponseEntity.ok(updatedTask);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        service.deleteById(id);
+        String email = AuthUtils.getEmailFromContext();
+        service.deleteById(id, email);
         return ResponseEntity.noContent().build();
     }
 }
