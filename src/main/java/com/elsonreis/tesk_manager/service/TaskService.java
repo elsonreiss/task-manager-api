@@ -23,10 +23,14 @@ public class TaskService {
         this.boardrepository = boardrepository;
     }
 
-    public TaskResponse createTask(TaskRequest taskRequest) {
+    public TaskResponse createTask(TaskRequest taskRequest, String email) {
 
         Board board = boardrepository.findById(taskRequest.getBoardId())
                 .orElseThrow(() -> new RuntimeException("Board não encontrado com id: " + taskRequest.getBoardId()));
+
+        if (!board.getUser().getEmail().equals(email)) {
+            throw new RuntimeException("Usuário não tem permissão para criar tarefa neste board!");
+        }
 
         Task task = TaskMapper.toEntity(taskRequest);
         task.setBoard(board);
@@ -73,10 +77,14 @@ public class TaskService {
                 .toList();
     }
 
-    public TaskResponse updateTask(Long id, TaskRequest taskRequest) {
+    public TaskResponse updateTask(Long id, TaskRequest taskRequest, String email) {
 
         Task task = taskrepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tarefa não encontrado com id: " + id));
+
+        if (!task.getBoard().getUser().getEmail().equals(email)) {
+            throw new RuntimeException("Usuário não tem permissão para eidtar essa esta tesk!");
+        }
 
         Board board = boardrepository.findById(taskRequest.getBoardId())
                 .orElseThrow(() -> new RuntimeException("Board não encontrado com id: " + taskRequest.getBoardId()));
@@ -91,10 +99,13 @@ public class TaskService {
         return TaskMapper.toDto(updatedTask);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Long id, String email) {
 
-        if (!taskrepository.existsById(id)) {
-            throw new RuntimeException("Tarefa não encontrado com id: " + id);
+        Task task = taskrepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tarefa não encontrado com id: " + id));
+
+        if (!task.getBoard().getUser().getEmail().equals(email)) {
+            throw new RuntimeException("Usuário não tem permissão para deletar essa tesk!");
         }
 
         taskrepository.deleteById(id);
