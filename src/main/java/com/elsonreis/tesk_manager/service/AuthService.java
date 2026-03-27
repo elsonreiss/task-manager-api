@@ -1,6 +1,7 @@
 package com.elsonreis.tesk_manager.service;
 
 import com.elsonreis.tesk_manager.dto.request.LoginRequest;
+import com.elsonreis.tesk_manager.dto.request.RegisterRequest;
 import com.elsonreis.tesk_manager.dto.response.LoginResponse;
 import com.elsonreis.tesk_manager.entity.User;
 import com.elsonreis.tesk_manager.repository.UserRepository;
@@ -20,6 +21,19 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
+    public void register(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email já registrado!");
+        }
+
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        userRepository.save(user);
+    }
+
     public LoginResponse login(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
@@ -34,3 +48,5 @@ public class AuthService {
         return new LoginResponse(token);
     }
 }
+
+
