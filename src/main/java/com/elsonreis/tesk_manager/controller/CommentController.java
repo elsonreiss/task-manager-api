@@ -2,6 +2,7 @@ package com.elsonreis.tesk_manager.controller;
 
 import com.elsonreis.tesk_manager.dto.request.CommentRequest;
 import com.elsonreis.tesk_manager.dto.response.CommentResponse;
+import com.elsonreis.tesk_manager.secutiry.AuthUtils;
 import com.elsonreis.tesk_manager.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,8 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<CommentResponse> createComment(@RequestBody CommentRequest commentRequest) {
-        CommentResponse createdComment = service.createComment(commentRequest);
+        String email = AuthUtils.getEmailFromContext();
+        CommentResponse createdComment = service.createComment(commentRequest, email);
         return ResponseEntity.status(201).body(createdComment);
     }
 
@@ -44,13 +46,15 @@ public class CommentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponse> updateComment(@PathVariable Long id, @RequestBody CommentRequest commentRequest) {
-        CommentResponse updatedComment = service.updateComment(id, commentRequest);
+        String email = AuthUtils.getEmailFromContext();
+        CommentResponse updatedComment = service.updateComment(id, commentRequest, email);
         return ResponseEntity.ok(updatedComment);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
-        service.deleteComment(id);
+        String email = AuthUtils.getEmailFromContext();
+        service.deleteComment(id, email);
         return ResponseEntity.noContent().build();
     }
 }
