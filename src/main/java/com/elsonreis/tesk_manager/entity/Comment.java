@@ -8,10 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "tb_comments")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,7 +27,19 @@ public class Comment {
     @Column(nullable = false, length = 500)
     private String message;
 
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
